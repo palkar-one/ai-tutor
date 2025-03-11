@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summarizer App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-yellow': '#FFD700',
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-black text-white">
+
+    <nav id="navBar" class="hidden p-4 bg-gray-900">
+        <button id="summarizerNav" class="bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300">Summarizer</button>
+        <button id="testGeneratorNav" class="bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300 ml-4">Test Generator</button>
+        <button id="questionAnswerNav" class="bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300 ml-4">Question Answering</button>
+    </nav>
+
+    <div id="loginPage" class="flex justify-center items-center h-screen">
+        <div class="bg-gray-900 rounded-lg shadow-lg p-8 w-96">
+            <h2 class="text-custom-yellow text-2xl font-semibold text-center mb-6">Login</h2>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Email</label>
+                    <input type="email" id="loginEmail" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Email" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Password</label>
+                    <input type="password" id="loginPassword" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Password" required>
+                </div>
+                <button type="submit" class="w-full bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300">Sign In</button>
+            </form>
+            <div class="mt-4 text-center">
+                <a href="#" class="text-sm text-gray-400 hover:underline">Forgot Password?</a>
+            </div>
+            <div class="mt-6 text-center">
+                <h2 class="text-custom-yellow text-2xl font-semibold mb-6">Sign Up</h2>
+                <form id="signupForm">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Name</label>
+                        <input type="text" id="signupName" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Name" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Email</label>
+                        <input type="email" id="signupEmail" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Email" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <input type="password" id="signupPassword" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="w-full bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="summarizerPage" class="hidden flex h-screen">
+        <div class="w-1/2 p-8">
+            <h2 class="text-custom-yellow text-2xl font-semibold mb-6">Upload Book & Summarize</h2>
+            <form id="summarizerForm">
+                <div class="mb-4">
+                    <label for="bookUpload" class="block text-sm font-medium mb-2">Upload Book</label>
+                    <input type="file" id="bookUpload" name="file" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow">
+                </div>
+                <div class="mb-6">
+                    <label for="topicInput" class="block text-sm font-medium mb-2">Enter Topic</label>
+                    <input type="text" id="topicInput" name="topic" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Enter topic to summarize">
+                </div>
+                <button type="submit" class="bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300">Summarize</button>
+            </form>
+        </div>
+        <div class="w-1/2 p-8 border-l border-gray-800">
+            <h2 class="text-custom-yellow text-2xl font-semibold mb-6">Summarized Text</h2>
+            <textarea id="summarizedText" class="bg-black border border-custom-yellow rounded w-full h-[80vh] py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow resize-vertical" readonly></textarea>
+        </div>
+    </div>
+
+    <div id="testGeneratorPage" class="hidden flex h-screen">
+        <div class="w-1/2 p-8">
+            <h2 class="text-custom-yellow text-2xl font-semibold mb-6">Upload Book & Generate Test</h2>
+            <form id="testGeneratorForm">
+                <div class="mb-4">
+                    <label for="testBookUpload" class="block text-sm font-medium mb-2">Upload Book</label>
+                    <input type="file" id="testBookUpload" name="file" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow">
+                </div>
+                <div class="mb-6">
+                    <label for="testTopicInput" class="block text-sm font-medium mb-2">Enter Topic for Test</label>
+                    <input type="text" id="testTopicInput" name="topic" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Enter topic for test">
+                </div>
+                <button type="submit" class="bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300">Generate Test</button>
+            </form>
+        </div>
+        <div class="w-1/2 p-8 border-l border-gray-800">
+            <h2 class="text-custom-yellow text-2xl font-semibold mb-6">Test Area</h2>
+            <div id="testArea" class="bg-black border border-custom-yellow rounded w-full h-[80vh] py-2 px-3 overflow-y-auto">
+            </div>
+        </div>
+    </div>
+
+    <div id="questionAnswerPage" class="hidden flex h-screen">
+        <div class="w-1/2 p-8">
+            <h2 class="text<h2 class="text-custom-yellow text-2xl font-semibold mb-6">Upload Book & Ask Questions</h2>
+            <form id="questionAnswerForm">
+                <div class="mb-4">
+                    <label for="qaBookUpload" class="block text-sm font-medium mb-2">Upload Book</label>
+                    <input type="file" id="qaBookUpload" name="file" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow">
+                </div>
+                <div class="mb-6">
+                    <label for="questionInput" class="block text-sm font-medium mb-2">Enter Question</label>
+                    <input type="text" id="questionInput" name="question" class="bg-black border border-custom-yellow rounded w-full py-2 px-3 focus:outline-none focus:ring focus:border-custom-yellow" placeholder="Enter your question">
+                </div>
+                <button type="submit" class="bg-black text-custom-yellow border border-custom-yellow rounded py-2 px-4 hover:bg-custom-yellow hover:text-black transition duration-300">Get Answer</button>
+            </form>
+        </div>
+        <div class="w-1/2 p-8 border-l border-gray-800">
+            <h2 class="text-custom-yellow text-2xl font-semibold mb-6">Answer Area</h2>
+            <div id="answerArea" class="bg-black border border-custom-yellow rounded w-full h-[80vh] py-2 px-3 overflow-y-auto">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Login successful') {
+                    document.getElementById('loginPage').classList.add('hidden');
+                    document.getElementById('summarizerPage').classList.remove('hidden');
+                    document.getElementById('navBar').classList.remove('hidden');
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during login.');
+            });
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name, email: email, password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.message === 'Signup successful') {
+                    document.getElementById('signupName').value = '';
+                    document.getElementById('signupEmail').value = '';
+                    document.getElementById('signupPassword').value = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during signup.');
+            });
+        });
+
+        document.getElementById('summarizerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('topic', document.getElementById('topicInput').value);
+            formData.append('file', document.getElementById('bookUpload').files[0]);
+
+            fetch('/summarize', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.summary) {
+                    document.getElementById('summarizedText').value = data.summary;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during summarization.');
+            });
+        });
+
+        document.getElementById('testGeneratorForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('topic', document.getElementById('testTopicInput').value);
+            formData.append('file', document.getElementById('testBookUpload').files[0]);
+
+            fetch('/test_generator', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.test) {
+                    document.getElementById('testArea').textContent = data.test;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during test generation.');
+            });
+        });
+
+        document.getElementById('questionAnswerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('question', document.getElementById('questionInput').value);
+            formData.append('file', document.getElementById('qaBookUpload').files[0]);
+
+            fetch('/answer_question', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.answer) {
+                    document.getElementById('answerArea').textContent = data.answer;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during question answering.');
+            });
+        });
+
+        document.getElementById('summarizerNav').addEventListener('click', function() {
+            document.getElementById('summarizerPage').classList.remove('hidden');
+            document.getElementById('testGeneratorPage').classList.add('hidden');
+            document.getElementById('questionAnswerPage').classList.add('hidden');
+        });
+
+        document.getElementById('testGeneratorNav').addEventListener('click', function() {
+            document.getElementById('testGeneratorPage').classList.remove('hidden');
+            document.getElementById('summarizerPage').classList.add('hidden');
+            document.getElementById('questionAnswerPage').classList.add('hidden');
+        });
+
+        document.getElementById('questionAnswerNav').addEventListener('click', function() {
+            document.getElementById('questionAnswerPage').classList.remove('hidden');
+            document.getElementById('summarizerPage').classList.add('hidden');
+            document.getElementById('testGeneratorPage').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
